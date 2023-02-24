@@ -5,6 +5,8 @@ from datetime import date
 from datetime import datetime
 import pandas as pd
 
+today = date.today()
+
 def region_spot(region):
     url = f"https://www.surf-report.com/meteo-surf/france/{region.lower()}"
     response = requests.get(url)
@@ -40,7 +42,7 @@ def get_spots(region):
     return spots
 
 def douille_datetime_2(day):
-    output = "2022-"
+    output = today.strftime("%Y")
     
     # deleting the alphabetical version of day
     
@@ -58,7 +60,7 @@ def douille_datetime_2(day):
             month = month[1:]
         else :
             break
-    months_dict = {"Janvier":"01","Fevrier":"02","Mars":"03",
+    months_dict = {"Janvier":"01","Février":"02","Mars":"03",
                    "Avril":"04","Mai":"05","Juin":"06",
                    "Juillet":"07","Août":"08","Septembre":"09",
                    "Octobre":"10","Novembre":"11","Décembre":"12"}
@@ -70,7 +72,7 @@ def douille_datetime_2(day):
         day = "0" + day
     pass
 
-    output = output + month_num + "-" +  day
+    output = output + "-" + month_num + "-" +  day
     
     #return output
     return date.fromisoformat(output)
@@ -82,7 +84,6 @@ def spot_to_html(spot_url):
 def get_spot_data(spot_url):
     
     ### This function will look if a spot has more than 10 stars in 1 day in the next 3 days
-    
     # Getting the HTML of the spot with previous function
     spot_html = spot_to_html(spot_url)
     soup = BeautifulSoup(spot_html, "html.parser")
@@ -147,10 +148,10 @@ all_regions = ["Nord", "Manche", "Bretagne", "loire-atlantique",
 ### This last bit calls the last function that makes the Scrapper work. 
 france_spot, france_best = region_spots_data(all_regions)
 df = france_best.join(france_spot.set_index('url'), on='url')
-
+df["date_scraped"] = today
 ### sorting the spots by date and stars
 df.sort_values(by=["date", "stars"], axis=0, ascending=[True, False])
 
 ### Export with today's name as fils name in 'data' folder
-today = date.today()
+
 df.to_csv(f'data/{str(today)}.csv', index=False, sep=",")
