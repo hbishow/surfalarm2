@@ -61,7 +61,11 @@ image_path = os.path.join(os.path.dirname(__file__), 'images', 'logo.png')
 image = Image.open(image_path)
 st.image(image, use_column_width=True)
 
-st.markdown("""<br><br><br>""", unsafe_allow_html=True)
+st.markdown("""<br><br>""", unsafe_allow_html=True)
+
+st.write(f"Here are the best surf spots in the next 3 days. Last update : {file_key}"[:-3])
+
+st.markdown("""<br>""", unsafe_allow_html=True)
 
 left_column, center_column, right_column = st.columns([1,6,1])
 with center_column:
