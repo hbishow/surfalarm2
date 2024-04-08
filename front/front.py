@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import boto3
 from io import StringIO
-from geopy.geocoders import Nominatim
 
 def read_csv_from_s3(bucket_name, file_key):
     """Read a CSV file from S3 into a Pandas DataFrame."""
@@ -50,12 +49,11 @@ def get_file(bucket_name):
 
 # Example usage in your Streamlit app
 bucket_name = "surf-spot-conditions"
-file_key = "2023-06-09.csv"
-#file_key = get_file(bucket_name)
+#file_key = "2023-06-09.csv"
+file_key = get_file(bucket_name)
 
 # Read the CSV file
 df = read_csv_from_s3(bucket_name, file_key)
 
 # Display the DataFrame in your app
 st.write(df)
-
