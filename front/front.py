@@ -3,6 +3,9 @@ import pandas as pd
 import boto3
 from io import StringIO
 from PIL import Image
+import os
+from PIL import Image
+import streamlit as st
 
 def read_csv_from_s3(bucket_name, file_key):
     """Read a CSV file from S3 into a Pandas DataFrame."""
@@ -54,8 +57,15 @@ file_key = get_file(bucket_name)
 df = read_csv_from_s3(bucket_name, file_key)
 
 # Display the DataFrame in your app
-image = Image.open("images/logo.png")
+#image = Image.open("images/logo.png")
+#st.image(image, use_column_width=True)
+
+# Assuming logo.png is inside an 'images' directory, which is in the same directory as this script
+image_path = os.path.join(os.path.dirname(__file__), 'images', 'logo.png')
+image = Image.open(image_path)
 st.image(image, use_column_width=True)
+
+
 left_column, center_column, right_column = st.columns([1,10,1])
 with center_column:
     st.dataframe(df)
