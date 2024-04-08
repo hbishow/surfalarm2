@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import boto3
 from io import StringIO
+from PIL import Image
 
 def read_csv_from_s3(bucket_name, file_key):
     """Read a CSV file from S3 into a Pandas DataFrame."""
@@ -38,10 +39,8 @@ def get_file(bucket_name):
     s3 = session.client('s3')
     # List objects in the bucket
     response = s3.list_objects_v2(Bucket=bucket_name)
-
     # Sort objects by last modified timestamp
     objects = sorted(response['Contents'], key=lambda obj: obj['LastModified'], reverse=True)
-
     # Get the key (file name) of the most recent object
     most_recent_file = objects[0]['Key']
 
@@ -49,11 +48,14 @@ def get_file(bucket_name):
 
 # Example usage in your Streamlit app
 bucket_name = "surf-spot-conditions"
-#file_key = "2023-06-09.csv"
 file_key = get_file(bucket_name)
 
 # Read the CSV file
 df = read_csv_from_s3(bucket_name, file_key)
 
 # Display the DataFrame in your app
-st.write(df)
+image = Image.open("logo.png")
+st.image(image, use_column_width=True)
+left_column, center_column, right_column = st.columns([1,10,1])
+with center_column:
+    st.dataframe(df)
