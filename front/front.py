@@ -51,7 +51,8 @@ def get_file(bucket_name):
 
 # Example usage in your Streamlit app
 bucket_name = "surf-spot-conditions"
-file_key = get_file(bucket_name)
+#file_key = get_file(bucket_name)
+file_key = "2024-03-25.csv"
 
 # Read the CSV file
 df = read_csv_from_s3(bucket_name, file_key)
