@@ -54,7 +54,7 @@ file_key = get_file(bucket_name)
 df = read_csv_from_s3(bucket_name, file_key)
 
 # Display the DataFrame in your app
-image = Image.open("logo.png")
+image = Image.open("images/logo.png")
 st.image(image, use_column_width=True)
 left_column, center_column, right_column = st.columns([1,10,1])
 with center_column:
