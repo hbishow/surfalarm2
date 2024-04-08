@@ -63,7 +63,8 @@ st.image(image, use_column_width=True)
 
 st.markdown("""<br><br>""", unsafe_allow_html=True)
 
-st.write(f"Here are the best surf spots in the next 3 days. Last update : {file_key}"[:-3])
+st.write("Here are the best surf spots in the next 3 days.)
+st.write(f"Last update : {file_key}"[:-3])
 
 st.markdown("""<br>""", unsafe_allow_html=True)
 
