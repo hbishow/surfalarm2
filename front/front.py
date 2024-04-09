@@ -62,12 +62,30 @@ image_path = os.path.join(os.path.dirname(__file__), 'images', 'logo.png')
 image = Image.open(image_path)
 st.image(image, use_column_width=True)
 
-st.markdown("""<br><br>""", unsafe_allow_html=True)
-
-st.write("Here are the best surf spots in the next 3 days.")
-st.write(f"Last update : {file_key}"[:-3])
-
 st.markdown("""<br>""", unsafe_allow_html=True)
+
+regions = df['region'].unique().tolist()
+stars = sorted(df['stars'].unique().tolist())
+
+# Sidebar selectors for 'region' and 'stars'
+selected_region = st.sidebar.selectbox('Select Region', ['All'] + regions)
+selected_stars = st.sidebar.selectbox('Select Stars', ['All'] + stars)
+
+# Filtering the DataFrame based on selections
+if selected_region != 'All':
+    df = df[df['region'] == selected_region]
+if selected_stars != 'All':
+    df = df[df['stars'] == selected_stars]
+
+if df.empty:
+    # Display a message and the URL to the users
+    st.markdown("Looks like there are no (good) waves in France today... Why not sit back and read [the latest duck dive article](https://theduckdive.substack.com/)?")
+    st.write(f"Last update : {file_key}"[:-3])
+else:
+    # Display the filtered DataFrame
+    st.write("Here are the best surf spots in the next 3 days.")
+    st.write(f"Last update : {file_key}"[:-3])
+    st.write(df)
 
 left_column, center_column, right_column = st.columns([1,6,1])
 with center_column:
